@@ -49,5 +49,11 @@ RSpec.describe '/api/v1/subscriptions' do
       expect(response_hash[:data][:attributes][:status]).to be_a(String)
       expect(response_hash[:data][:attributes][:frequency]).to be_a(String)
     end
+
+    it 'has default status of active' do
+      post api_v1_subscriptions_path, params: params
+
+      expect(Subscription.last.active?).to be true
+    end
   end
 end
