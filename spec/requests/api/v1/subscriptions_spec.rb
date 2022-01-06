@@ -80,13 +80,13 @@ RSpec.describe '/api/v1/subscriptions' do
   end
 
   describe 'PATCH /' do
-    context 'when successful' do
-      let(:customer) { create(:customer) }
-      let(:tea) { create(:tea) }
-      let!(:subscription) { create(:subscription, customer: customer, tea: tea) }
+    let(:customer) { create(:customer) }
+    let(:tea) { create(:tea) }
+    let!(:subscription) { create(:subscription, customer: customer, tea: tea) }
 
+    context 'when successful' do
       before :each do
-        patch api_v1_subscription_path(subscription), params: { status: 'cancelled' }
+        patch api_v1_subscription_path(subscription), params: { status: 1 }
       end
 
       it 'cancels a subscription' do
@@ -96,23 +96,35 @@ RSpec.describe '/api/v1/subscriptions' do
       it 'is successful' do
         expect(response).to be_successful
       end
-
-      it 'returns a 204 status' do
-        expect(response).to have_http_status(204)
-      end
     end
 
     context 'when unsuccessful' do
-      before :each do
-        patch api_v1_subscription_path(-1), params: { status: 'cancelled' }
+      context 'invalid subscription' do
+        before :each do
+          patch api_v1_subscription_path(-1), params: { status: 1 }
+        end
+
+        it 'returns error if invalid subscription id' do
+          expect(response_hash).to eq({ errors: "Couldn't find Subscription with 'id'=-1"})
+        end
+
+        it 'returns a 404 status' do
+          expect(response).to have_http_status(404)
+        end
       end
 
-      it 'returns error if invalid subscription id' do
-        expect(response_hash).to eq({ errors: "Couldn't find Subscription with 'id'=-1"})
-      end
+      context 'missing param' do
+        before :each do
+          patch api_v1_subscription_path(subscription)
+        end
 
-      it 'returns a 404 status' do
-        expect(response).to have_http_status(404)
+        it 'returns error if missing param' do
+          expect(response_hash).to eq({ errors: 'Please provide a status param'})
+        end
+
+        it 'returns a 400 status' do
+          expect(response).to have_http_status(400)
+        end
       end
     end
   end
