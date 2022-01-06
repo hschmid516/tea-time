@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe '/api/v1/subscriptions' do
   let(:response_hash) { JSON(response.body, symbolize_names: true) }
 
-  describe 'create a subscription' do
+  describe 'POST /' do
     context 'when successful' do
       let(:customer) { create(:customer) }
       let(:tea) { create(:tea) }
@@ -79,7 +79,7 @@ RSpec.describe '/api/v1/subscriptions' do
     end
   end
 
-  describe 'cancel a subscription' do
+  describe 'PATCH /' do
     context 'when successful' do
       let(:customer) { create(:customer) }
       let(:tea) { create(:tea) }
@@ -109,6 +109,42 @@ RSpec.describe '/api/v1/subscriptions' do
 
       it 'returns error if invalid subscription id' do
         expect(response_hash).to eq({ errors: "Couldn't find Subscription with 'id'=-1"})
+      end
+
+      it 'returns a 404 status' do
+        expect(response).to have_http_status(404)
+      end
+    end
+  end
+
+  describe 'GET /' do
+    context 'when successful' do
+      let!(:customer1) { create(:customer) }
+      let!(:customer2) { create(:customer) }
+      let!(:tea1) { create(:tea) }
+      let!(:tea2) { create(:tea) }
+      let!(:subscription1) { create(:subscription, customer: customer1, tea: tea1) }
+      let!(:subscription2) { create(:subscription, customer: customer1, tea: tea2) }
+      let!(:subscription3) { create(:subscription, customer: customer2, tea: tea1) }
+
+      before :each do
+        get api_v1_customer_subscriptions_path(customer1.id)
+      end
+
+      it 'returns all subscriptions for a customer' do
+        expect(response_hash[:data].length).to eq(2)
+        expect(response_hash[:data][0][:id].to_i).to eq(subscription1.id)
+        expect(response_hash[:data][1][:id].to_i).to eq(subscription2.id)
+      end
+    end
+
+    context 'when unsuccessful' do
+      before :each do
+        get api_v1_customer_subscriptions_path(-1)
+      end
+
+      it 'returns error if invalid customer id' do
+        expect(response_hash).to eq({ errors: "Couldn't find Customer with 'id'=-1"})
       end
 
       it 'returns a 404 status' do
