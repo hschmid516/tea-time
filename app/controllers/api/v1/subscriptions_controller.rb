@@ -2,7 +2,17 @@ class Api::V1::SubscriptionsController < ApplicationController
   def create
     subscription = Subscription.create(subscription_params)
 
-    render json: SubscriptionSerializer.new(subscription)
+    if subscription.save
+      render json: SubscriptionSerializer.new(subscription)
+    else
+      render json: { errors: subscription.errors.full_messages }, status: 400
+    end
+  end
+
+  def update
+    subscription = Subscription.find(params[:id])
+    subscription.update(subscription_params)
+    render status: 204
   end
 
   private
