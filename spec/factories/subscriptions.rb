@@ -4,7 +4,7 @@ FactoryBot.define do
     tea { nil }
     title { "MyString" }
     price { 1.5 }
-    status { 1 }
+    status { 0 }
     frequency { 1 }
   end
 end
