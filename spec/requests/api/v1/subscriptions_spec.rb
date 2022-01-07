@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe '/api/v1/subscriptions' do
+RSpec.describe '/api/v1/customers/:customer_id/subscriptions' do
   let(:response_hash) { JSON(response.body, symbolize_names: true) }
 
   describe 'POST /' do
@@ -19,23 +19,23 @@ RSpec.describe '/api/v1/subscriptions' do
       end
 
       it 'creates a subscription' do
-        expect { post api_v1_subscriptions_path, params: params }.to change { Subscription.count }
+        expect { post api_v1_customer_subscriptions_path(customer), params: params }.to change { Subscription.count }
       end
 
       it 'is successful' do
-        post api_v1_subscriptions_path, params: params
+        post api_v1_customer_subscriptions_path(customer), params: params
 
         expect(response).to be_successful
       end
 
       it 'returns the created subscription' do
-        post api_v1_subscriptions_path, params: params
+        post api_v1_customer_subscriptions_path(customer), params: params
 
         expect(response_hash[:data][:attributes]).to include(params)
       end
 
       it 'has correct data types' do
-        post api_v1_subscriptions_path, params: params
+        post api_v1_customer_subscriptions_path(customer), params: params
 
         expect(response_hash).to be_a(Hash)
         expect(response_hash[:data]).to be_a(Hash)
@@ -66,7 +66,7 @@ RSpec.describe '/api/v1/subscriptions' do
       end
 
       before :each do
-        post api_v1_subscriptions_path, params: params
+        post api_v1_customer_subscriptions_path(customer), params: params
       end
 
       it 'returns an error if attributes are missing' do
@@ -86,7 +86,7 @@ RSpec.describe '/api/v1/subscriptions' do
 
     context 'when successful' do
       before :each do
-        patch api_v1_subscription_path(subscription), params: { status: 1 }
+        patch api_v1_customer_subscription_path(customer, subscription), params: { status: 1 }
       end
 
       it 'cancels a subscription' do
@@ -101,11 +101,11 @@ RSpec.describe '/api/v1/subscriptions' do
     context 'when unsuccessful' do
       context 'invalid subscription' do
         before :each do
-          patch api_v1_subscription_path(-1), params: { status: 1 }
+          patch api_v1_customer_subscription_path(customer, -1), params: { status: 1 }
         end
 
         it 'returns error if invalid subscription id' do
-          expect(response_hash).to eq({ errors: "Couldn't find Subscription with 'id'=-1"})
+          expect(response_hash).to eq({ errors: "Couldn't find Subscription with 'id'=-1" })
         end
 
         it 'returns a 404 status' do
@@ -115,11 +115,11 @@ RSpec.describe '/api/v1/subscriptions' do
 
       context 'missing param' do
         before :each do
-          patch api_v1_subscription_path(subscription)
+          patch api_v1_customer_subscription_path(customer, subscription)
         end
 
         it 'returns error if missing param' do
-          expect(response_hash).to eq({ errors: 'Please provide a status param'})
+          expect(response_hash).to eq({ errors: 'Please provide a status param' })
         end
 
         it 'returns a 400 status' do
@@ -156,7 +156,7 @@ RSpec.describe '/api/v1/subscriptions' do
       end
 
       it 'returns error if invalid customer id' do
-        expect(response_hash).to eq({ errors: "Couldn't find Customer with 'id'=-1"})
+        expect(response_hash).to eq({ errors: "Couldn't find Customer with 'id'=-1" })
       end
 
       it 'returns a 404 status' do
