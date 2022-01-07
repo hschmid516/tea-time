@@ -1,6 +1,6 @@
 # Tea Time
 
-Tea Time was created as a practice take-home project for Turing School of Software and Design. It is a REST API built in rails as a Tea Subscription Service. There are three endpoints exposed for: subscribing customers to a tea subscription, cancelling or reactivating a subscription, and viewing all subscriptions for a customer.
+Tea Time was created as a practice take-home project for Turing School of Software and Design. It is a REST API built in rails as a Tea Subscription Service. There are three endpoints exposed for subscribing customers to a tea subscription, cancelling or reactivating a subscription, and viewing all subscriptions for a customer.
 
 
 ## Built With
