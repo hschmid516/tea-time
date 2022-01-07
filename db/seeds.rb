@@ -5,3 +5,15 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Customer.destroy_all
+Tea.destroy_all
+Subscription.destroy_all
+
+customer = FactoryBot.create(:customer)
+
+FactoryBot.create_list(:tea, 10)
+
+Tea.all.each do |tea|
+
+  FactoryBot.create(:subscription, customer: customer, tea_id: tea.id)
+end
