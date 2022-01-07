@@ -129,7 +129,7 @@ Tea Time was created as a practice take-home project for Turing School of Softwa
 }
 ```
 
-### Cancel or Reactivate a Subscription
+### Get all Subscriptions for a Customer
  `GET /api/v1/customers/:customer_id/subscriptions`
 
 **Example Response:**
