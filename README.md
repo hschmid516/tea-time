@@ -70,7 +70,7 @@ Tea Time was created as a practice take-home project for Turing School of Softwa
 <img src="https://user-images.githubusercontent.com/78242081/148468903-d9d117f8-2f30-4f1c-9c89-c89e21d83be0.png" alt="drawing" width="500"/>
 
 ## Endpoints
-#### Create a tea subscription for a customer.
+### Create a tea subscription for a customer
 `POST /api/v1/customers/:customer_id/subscriptions`
 
 **Example Request Body:**
@@ -105,7 +105,7 @@ Tea Time was created as a practice take-home project for Turing School of Softwa
 }
 ```
 
-#### Cancel or Reactivate a Subscription.
+### Cancel or Reactivate a Subscription
  `PATCH /api/v1/customers/:customer_id/subscriptions/subscription_id?status={status}`
 
 `status` can either be `0` for `active`, or `1` for `cancelled`
@@ -129,7 +129,7 @@ Tea Time was created as a practice take-home project for Turing School of Softwa
 }
 ```
 
-#### Cancel or Reactivate a Subscription.
+### Cancel or Reactivate a Subscription
  `GET /api/v1/customers/:customer_id/subscriptions`
 
 **Example Response:**
