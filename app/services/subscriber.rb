@@ -11,7 +11,7 @@ class Subscriber < ApplicationService
     if subscription.save
       SubscriptionSerializer.new(subscription)
     else
-      raise ActionController::BadRequest.new(subscription.errors.full_messages)
+      raise ActionController::BadRequest, subscription.errors.full_messages
     end
   end
 end

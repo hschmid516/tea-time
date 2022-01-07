@@ -12,7 +12,7 @@ class Activator < ApplicationService
       subscription.update(status: params[:status].to_i)
       SubscriptionSerializer.new(subscription)
     else
-      raise ActionController::BadRequest.new(), ('Please provide a status param').to_json
+      raise ActionController::BadRequest.new, 'Please provide a status param'.to_json
     end
   end
 end
