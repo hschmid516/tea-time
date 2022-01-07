@@ -119,7 +119,7 @@ RSpec.describe '/api/v1/customers/:customer_id/subscriptions' do
         end
 
         it 'returns error if missing param' do
-          expect(response_hash).to eq({ errors: 'Please provide a status param' })
+          expect(response_hash).to eq({ errors: 'Please provide a valid status param' })
         end
 
         it 'returns a 400 status' do
